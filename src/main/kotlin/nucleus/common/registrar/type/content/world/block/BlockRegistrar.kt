@@ -1,4 +1,4 @@
-package nucleus.common.registrar.type.content
+package nucleus.common.registrar.type.content.world.block
 
 import net.minecraft.block.Block
 import net.minecraft.util.registry.Registry

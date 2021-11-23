@@ -12,11 +12,11 @@ open class MemberRegistrar<V>(namespace: String) : IdentifyingRegistrar<V>(names
         }
     }
 
-    open fun memberOf(ID: Identifier, provider: () -> V): Member<V> {
+    open fun memberOf(ID: Identifier, provider: (Identifier) -> V): Member<V> {
         return Member(ID, provider).apply(members::add)
     }
 
-    open fun memberOf(path: String, provider: () -> V): Member<V> {
+    open fun memberOf(path: String, provider: (Identifier) -> V): Member<V> {
         return memberOf(Identifier(namespace, path), provider)
     }
 }

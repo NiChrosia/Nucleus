@@ -8,9 +8,11 @@ import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.text.Text
 
-/** A data structure containing a screen handler type and a screen constructor. The purpose of this abstraction is to
- * allow dynamic publishing of screens, as wildcards do not match the constrains in [ScreenRegistry.register]. */
-open class ScreenEntry<T : ScreenHandler, S>(val type: ScreenHandlerType<T>, val constructor: (T, PlayerInventory, Text) -> S) where S : Screen, S : ScreenHandlerProvider<T> {
+/** A data structure containing a screen type & constructor, to allow dynamically publishing wildcard type entries. */
+open class ScreenEntry<T, S>(
+    val type: ScreenHandlerType<T>,
+    val constructor: (T, PlayerInventory, Text) -> S
+) where T : ScreenHandler, S : Screen, S : ScreenHandlerProvider<T> {
     open fun publish() {
         ScreenRegistry.register(type, constructor)
     }
