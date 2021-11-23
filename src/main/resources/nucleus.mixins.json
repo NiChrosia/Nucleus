@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "package": "nucleus.mixin",
+  "mixins": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

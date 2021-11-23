@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "nucleus",
+  "version": "${version}",
+
+  "name": "Nucleus",
+  "description": "An extensible registration library.",
+  "authors": [
+    "NiChrosia"
+  ],
+  "contact": {
+    "homepage": "https://github.com/NiChrosia/Nucleus",
+    "sources": "https://github.com/NiChrosia/Nucleus"
+  },
+
+  "license": "CC0-1.0",
+  "accessWidener": "nucleus.accesswidener",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "nucleus.common.Nucleus"
+      }
+    ],
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "nucleus.client.NucleusClient"
+      }
+    ],
+    "fabric-gametest": [
+      {
+        "adapter": "kotlin",
+        "value": "nucleus.test.NucleusTest"
+      }
+    ]
+  },
+  "mixins": [
+    "nucleus.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.8.7",
+    "fabric": ">=0.42.0",
+    "fabric-language-kotlin": "*",
+    "minecraft": "1.17.x",
+    "advanced_runtime_resource_pack": ">=0.5.2"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
