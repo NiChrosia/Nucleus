@@ -1,7 +1,7 @@
-package nucleus.common.registrar.type.identity
+package nucleus.common.registrar.base.identity
 
 import net.minecraft.util.Identifier
-import nucleus.common.registrar.type.binary.BinaryRegistrar
+import nucleus.common.registrar.base.binary.BinaryRegistrar
 
 open class IdentifyingRegistrar<V>(val namespace: String) : BinaryRegistrar<Identifier, V>() {
     open fun register(key: String, value: V): V {

@@ -1,4 +1,4 @@
-package nucleus.common.registrar.type.member
+package nucleus.common.registrar.base.member
 
 import net.minecraft.util.Identifier
 

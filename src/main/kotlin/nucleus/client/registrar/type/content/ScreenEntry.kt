@@ -1,4 +1,4 @@
-package nucleus.client.registrar.builtin.content
+package nucleus.client.registrar.type.content
 
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry
 import net.minecraft.client.gui.screen.Screen

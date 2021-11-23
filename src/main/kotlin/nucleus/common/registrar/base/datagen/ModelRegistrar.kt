@@ -1,4 +1,4 @@
-package nucleus.common.registrar.type.datagen
+package nucleus.common.registrar.base.datagen
 
 import net.devtech.arrp.api.RuntimeResourcePack
 import net.devtech.arrp.json.models.JModel

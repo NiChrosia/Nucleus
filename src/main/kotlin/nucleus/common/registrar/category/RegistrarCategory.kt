@@ -1,8 +1,8 @@
 package nucleus.common.registrar.category
 
 import nucleus.common.registrar.Registrar
-import nucleus.common.registrar.type.identity.IdentifyingRegistrar
-import nucleus.common.registrar.type.member.MemberRegistrar
+import nucleus.common.registrar.base.identity.IdentifyingRegistrar
+import nucleus.common.registrar.base.member.MemberRegistrar
 
 /** A categorization of categories & registrars for easy mass loading. Intended to be implemented on a mod initializer
  * object, for access like `Nucleus.content.item.example`. */

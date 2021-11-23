@@ -1,4 +1,4 @@
-package nucleus.common.registrar.type.binary
+package nucleus.common.registrar.base.binary
 
 import nucleus.common.registrar.Registry
 
