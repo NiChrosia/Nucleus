@@ -70,6 +70,7 @@ tasks {
     "compileKotlin"(KotlinCompile::class) {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_16.toString()
+            freeCompilerArgs = listOf("-XXLanguage:+NewInference")
         }
     }
 

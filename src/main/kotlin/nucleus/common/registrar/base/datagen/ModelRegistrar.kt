@@ -1,10 +1,11 @@
 package nucleus.common.registrar.base.datagen
 
-import net.devtech.arrp.api.RuntimeResourcePack
 import net.devtech.arrp.json.models.JModel
 import net.minecraft.util.Identifier
+import nucleus.common.datagen.lang.RegistrarPack
+import nucleus.common.registrar.base.member.MemberRegistrar
 
-open class ModelRegistrar(namespace: String, pack: RuntimeResourcePack) : PackRegistrar<JModel>(pack, namespace) {
+open class ModelRegistrar(override val pack: RegistrarPack, namespace: String) : MemberRegistrar<JModel>(namespace), PackRegistrar {
     override fun publish(key: Identifier, value: JModel): JModel {
         return super.publish(key, value).also {
             pack.addModel(it, key)
