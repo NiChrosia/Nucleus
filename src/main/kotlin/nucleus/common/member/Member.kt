@@ -1,11 +1,27 @@
 package nucleus.common.member
 
-import net.minecraft.util.Identifier
-import nucleus.common.registrar.base.member.MemberRegistrar
+import nucleus.common.registrar.Registrar
+import nucleus.common.registrar.RegistrarStage
 
-/** An extension of [Lazy] that contains an identifier and a content provider. */
-open class Member<V>(val ID: Identifier, provider: (Identifier) -> V) : Lazy<V> by lazy({ provider(ID) }) {
-    open fun register(registrar: MemberRegistrar<V>): V {
-        return registrar.register(ID, value)
+open class Member<K, V, T : V>(open val registrar: Registrar<K, V>, val key: K, val provider: (K) -> T) : RegistrarStage.User(), Lazy<T> by lazy({ provider(key) }) {
+    val registrationListeners = mutableListOf<Member<K, V, T>.() -> Unit>()
+    val datagenListeners = mutableListOf<Member<K, V, T>.() -> Unit>()
+
+    override fun register() {
+        super.register()
+
+        registrar.register(key, value)
+        registrationListeners.forEach { it(this) }
+    }
+
+    override fun datagen() {
+        super.datagen()
+
+        datagenListeners.forEach { it(this) }
+    }
+
+    @Suppress("unused") // used in abstract shadowing
+    open fun onDatagen(action: Member<K, V, T>.() -> Unit) {
+        datagenListeners.add(action)
     }
 }

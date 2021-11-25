@@ -23,12 +23,6 @@
         "value": "nucleus.common.Nucleus"
       }
     ],
-    "client": [
-      {
-        "adapter": "kotlin",
-        "value": "nucleus.client.NucleusClient"
-      }
-    ],
     "fabric-gametest": [
       {
         "adapter": "kotlin",

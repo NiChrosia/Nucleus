@@ -1,18 +1,43 @@
 package nucleus.common.registrar
 
-/** The core of the Nucleus registration system. */
-open class Registrar<K, V> {
-    /** The registry object for containing content entries.  */
-    open val registry = Registry<K, V>()
+import nucleus.common.Nucleus
+import nucleus.common.member.Member
 
-    /** Register the specified [key] and [value] to the [registry]. */
-    open fun register(key: K, value: V) = registry.register(key, value)
+open class Registrar<K, V>(open val group: RegistrarGroup) : RegistrarStage.User() {
+    protected val content = mutableMapOf<K, V>()
+    protected val members: MutableList<Member<K, V, *>> = mutableListOf()
 
-    /** Publish the specified [key] and [value] to external registries. */
-    open fun publish(key: K, value: V) = value
+    override fun register() {
+        super.register()
 
-    /** Publish all content contained within the [registry]. */
-    open fun publishContent() {
-        registry.content.forEach(this::publish)
+        members.forEach(Member<K, V, *>::register)
+    }
+
+    override fun publish() {
+        super.publish()
+
+        members.forEach(Member<K, V, *>::publish)
+    }
+
+    override fun datagen() {
+        super.datagen()
+
+        members.forEach(Member<K, V, *>::datagen)
+    }
+
+    open fun register(key: K, value: V) {
+        if (content[key] != null) {
+            Nucleus.log.warn("Registering pre-existing entry at (key: $key, value: $value), overriding.")
+        }
+
+        content[key] = value
+    }
+
+    open fun find(key: K): V? {
+        return content[key]
+    }
+
+    open fun <T : V> member(key: K, provider: (K) -> T): Member<K, V, T> {
+        return Member(this, key, provider).also(members::add)
     }
 }

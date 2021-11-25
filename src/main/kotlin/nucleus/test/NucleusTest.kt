@@ -5,18 +5,19 @@ import net.minecraft.test.GameTest
 import net.minecraft.test.TestContext
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
-import nucleus.test.category.TestCategory
+import nucleus.test.group.TestGroup
 import org.apache.logging.log4j.LogManager
 
 open class NucleusTest {
     val log = LogManager.getLogger()
 
     @GameTest(structureName = FabricGameTest.EMPTY_STRUCTURE)
+    @Suppress("unused")
     fun test(helper: TestContext) {
-        TestCategory.launch()
+        TestGroup.launch()
 
-        check(Registry.BLOCK, TestCategory.content.block.test)
-        check(Registry.ITEM, TestCategory.content.item.test)
+        check(Registry.BLOCK, TestGroup.content.block.test)
+        check(Registry.ITEM, TestGroup.content.item.test)
 
         helper.complete()
         log.info("Nucleus test completed successfully.")
