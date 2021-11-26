@@ -6,7 +6,7 @@ import net.minecraft.util.registry.DefaultedRegistry;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;
-import nucleus.common.member.type.TransitionMappings;
+import nucleus.common.builtin.member.content.TransitionMember;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,12 +20,14 @@ public abstract class RegistryMixin<T> extends SimpleRegistry<T> {
         super(registryKey, lifecycle);
     }
 
-    @Shadow @Nullable public abstract T get(@Nullable Identifier id);
+    @Shadow
+    @Nullable
+    public abstract T get(@Nullable Identifier id);
 
     @Inject(method = "get(Lnet/minecraft/util/Identifier;)Ljava/lang/Object;", at = @At("HEAD"), cancellable = true)
     public void get(Identifier id, CallbackInfoReturnable<T> info) {
-        if (id != null && TransitionMappings.INSTANCE.containsKey(id)) {
-            Identifier current = TransitionMappings.INSTANCE.get(id);
+        if (id != null && TransitionMember.mappings.containsKey(id)) {
+            Identifier current = TransitionMember.mappings.get(id);
             T value = get(current);
 
             info.setReturnValue(value);

@@ -1,9 +1,18 @@
 package nucleus.common.registrar.type
 
-interface BinaryRegistrar<K, V> {
-    val reversed: MutableMap<V, K>
+import nucleus.common.division.RegistrarRoot
+import nucleus.common.registrar.Registrar
 
-    fun identify(value: V): K? {
+open class BinaryRegistrar<K, V, R : RegistrarRoot<R>>(root: R) : Registrar<K, V, R>(root) {
+    open val reversed = mutableMapOf<V, K>()
+
+    override fun register(key: K, value: V): V {
+        return super.register(key, value).also {
+            reversed[value] = key
+        }
+    }
+
+    open fun identify(value: V): K? {
         return reversed[value]
     }
 }
