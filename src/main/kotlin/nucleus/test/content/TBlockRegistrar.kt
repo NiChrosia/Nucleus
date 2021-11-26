@@ -4,10 +4,10 @@ import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.Block
 import net.minecraft.block.Material
 import net.minecraft.util.Identifier
+import nucleus.common.Nucleus
 import nucleus.common.builtin.division.content.BlockRegistrar
-import nucleus.test.NucleusTest
 
-open class TBlockRegistrar(root: NucleusTest) : BlockRegistrar<NucleusTest>(root) {
+open class TBlockRegistrar(root: Nucleus) : BlockRegistrar<Nucleus>(root) {
     val test by memberOf(root.identify("test")) { Block(FabricBlockSettings.of(Material.STONE)) }.apply {
         lang(::readableEnglish)
         model(::omnidirectionalModel)
