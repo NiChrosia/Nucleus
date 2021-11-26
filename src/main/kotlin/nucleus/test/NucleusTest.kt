@@ -17,8 +17,6 @@ open class NucleusTest : ModRoot<NucleusTest>("nucleus") {
 
     @GameTest(structureName = FabricGameTest.EMPTY_STRUCTURE)
     fun test(helper: TestContext) {
-        launch()
-
         check(Registry.BLOCK, content.block.test)
         check(Registry.ITEM, content.item.test)
 
