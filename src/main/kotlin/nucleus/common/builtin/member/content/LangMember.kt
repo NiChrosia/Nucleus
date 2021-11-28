@@ -16,10 +16,10 @@ interface LangMember<R : ModRoot<R>> {
     }
 
     fun lang(provider: () -> String) {
-        root.datagen.listeners.add {
+        root.dispatcher.datagen.listeners.add {
             val key = "$langCategory.${key.split(".")}" // item.minecraft.stone_pickaxe
 
-            pack.english.entry(key, provider())
+            it.pack.english.entry(key, provider())
         }
     }
 }

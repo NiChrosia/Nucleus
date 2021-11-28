@@ -3,6 +3,7 @@ package nucleus.common.member
 import nucleus.common.division.RegistrarRoot
 import nucleus.common.registrar.type.PublicationRegistrar
 
+/** An extension of [Member] that allows publishing content. */
 open class PublicationMember<K, V, T : V, R : RegistrarRoot<R>>(
     root: R,
     override val registrar: PublicationRegistrar<K, V, R>,

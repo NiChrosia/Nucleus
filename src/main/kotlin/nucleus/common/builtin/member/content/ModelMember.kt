@@ -12,8 +12,8 @@ interface ModelMember<R : ModRoot<R>> {
     val modelFolder: String
 
     fun model(provider: () -> JModel) {
-        root.datagen.listeners.add {
-            pack.addModel(provider(), key.within(modelFolder))
+        root.dispatcher.datagen.listeners.add {
+            it.pack.addModel(provider(), key.within(modelFolder))
         }
     }
 }

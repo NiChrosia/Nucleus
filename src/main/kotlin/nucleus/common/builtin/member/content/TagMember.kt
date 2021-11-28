@@ -9,7 +9,7 @@ interface TagMember<R : ModRoot<R>> {
     val key: Identifier
 
     fun tag(provider: () -> Tag<R>) {
-        root.datagen.listeners.add {
+        root.dispatcher.datagen.listeners.add {
             provider().values.add(key)
         }
     }

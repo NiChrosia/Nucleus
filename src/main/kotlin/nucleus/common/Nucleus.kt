@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager
 @Suppress("unused")
 object Nucleus : ModRoot<Nucleus>("nucleus"), ModInitializer {
     override val instance = this
-    override val content = TContentCategory(this).collected()
+    override val content = TContentCategory(this)
 
     val log = LogManager.getLogger()
 

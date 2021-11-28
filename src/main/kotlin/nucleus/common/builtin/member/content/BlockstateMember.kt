@@ -24,8 +24,8 @@ interface BlockstateMember<R : ModRoot<R>> {
     }
 
     fun blockstate(provider: () -> JState) {
-        root.register.listeners.add {
-            pack.addBlockState(provider(), key)
+        root.dispatcher.register.listeners.add {
+            it.pack.addBlockState(provider(), key)
         }
     }
 }

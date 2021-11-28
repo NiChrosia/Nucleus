@@ -12,22 +12,22 @@ open class NucleusTest {
     @GameTest(structureName = FabricGameTest.EMPTY_STRUCTURE)
     fun test(helper: TestContext) {
         Nucleus.apply {
-            check(Registry.BLOCK, content.block.test)
-            check(Registry.ITEM, content.item.test)
+            Registry.BLOCK.assertFound(content.block.test)
+            Registry.ITEM.assertFound(content.item.test)
 
             helper.complete()
             log.info("Test completed successfully.")
         }
     }
 
-    fun <T> check(registry: Registry<T>, entry: T) {
-        val registryEntry = registry.entries.find { it.value == entry }
+    fun <T> Registry<T>.assertFound(entry: T) {
+        val registryEntry = entries.find { it.value == entry }
         val entryId = registryEntry?.key?.value
 
-        check(registry, entryId ?: throw IllegalArgumentException("Given entry is not present in registry."))
+        assertFound(entryId ?: throw IllegalArgumentException("Given entry is not present in registry."))
     }
 
-    fun <T> check(registry: Registry<T>, key: Identifier) {
-        assert(registry.ids.contains(key)) { "Failed to find entry $key in registry $registry." }
+    fun <T> Registry<T>.assertFound(key: Identifier) {
+        assert(ids.contains(key)) { "Failed to find entry $key in registry $this." }
     }
 }

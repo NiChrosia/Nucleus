@@ -39,10 +39,10 @@ interface LootableMember<R : ModRoot<R>> {
     }
 
     fun loot(provider: () -> Pair<Identifier, JLootTable>) {
-        root.datagen.listeners.add {
+        root.dispatcher.datagen.listeners.add {
             val (blockId, table) = provider()
 
-            pack.addLootTable(blockId.within("blocks"), table)
+            it.pack.addLootTable(blockId.within("blocks"), table)
         }
     }
 }

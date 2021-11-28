@@ -2,26 +2,19 @@ package nucleus.common.division
 
 import net.minecraft.util.Identifier
 
+/** The root of the registrar categorization hierarchy. Contains an [id] for easy [Identifier] construction. */
 abstract class RegistrarRoot<R : RegistrarRoot<R>>(val id: String) {
+    /** The instance of this root. Required to allow extension via generics. */
     abstract val instance: R
 
-    val register = RegistrationPhase<R>(100)
-    val publish = RegistrationPhase<R>(200)
-    val datagen = RegistrationPhase<R>(300)
+    /** The dispatcher of this root. Adding more phases should be done by overriding this value. */
+    open val dispatcher = RegistrarPhaseDispatcher<R>()
 
-    val phases = mutableListOf(register, publish, datagen)
-
-    val categories = mutableListOf<RegistrarCategory<R>>()
-
-    open fun <T : RegistrarCategory<R>> T.collected(): T {
-        return also(this@RegistrarRoot.categories::add)
-    }
-
+    /** Convert the given [path] to an [Identifier] using [id] as a namespace. */
     open fun identify(path: String) = Identifier(id, path)
 
+    /** Launch all content within this root, using the [dispatcher]. */
     open fun launch() {
-        phases.sortedBy(RegistrationPhase<R>::order).forEach {
-            it(instance)
-        }
+        dispatcher.execute(instance)
     }
 }
