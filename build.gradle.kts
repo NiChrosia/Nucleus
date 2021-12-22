@@ -1,17 +1,136 @@
+@file:Suppress("unused")
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-// utility functions
+// utilities
 
-@Suppress("unchecked_cast")
-fun getProp(name: String): String {
+fun extension(name: String): String {
     return project.ext[name] as String
 }
 
-fun DependencyHandler.bundledModImplementation(url: String): Dependency? {
-    return include(url)?.let { modImplementation(it) }
+fun DependencyHandler.bundledMod(notation: Any, impl: (Any) -> Dependency? = this::modImplementation): Dependency? {
+    return include(notation)?.let(impl)
 }
 
-// plugins
+fun DependencyHandler.optionallyBundled(notation: Any, bundled: Boolean, impl: (Any) -> Dependency? = this::modImplementation): Dependency? {
+    return if (bundled) bundledMod(notation, impl) else modImplementation(notation)
+}
+
+// libraries
+
+// repositories
+
+fun RepositoryHandler.jitpack() {
+    maven {
+        name = "Jitpack"
+        setUrl("https://jitpack.io")
+    }
+}
+
+fun RepositoryHandler.modmuss() {
+    maven {
+        name = "Modmuss50"
+        setUrl("https://maven.modmuss50.me/")
+        content {
+            includeGroup("RebornCore")
+            includeGroup("TechReborn")
+            includeGroup("teamreborn")
+        }
+    }
+}
+
+fun RepositoryHandler.buildcraft() {
+    maven {
+        name = "BuildCraft"
+        setUrl("https://mod-buildcraft.com/maven")
+    }
+}
+
+fun RepositoryHandler.patchouli() {
+    maven {
+        name = "Patchouli"
+        setUrl("https://maven.blamejared.com")
+        content {
+            includeGroup("vazkii.patchouli")
+        }
+    }
+}
+
+fun RepositoryHandler.devan() {
+    maven {
+        name = "Devan"
+        setUrl("https://storage.googleapis.com/devan-maven/")
+    }
+}
+
+fun RepositoryHandler.cottonMc() {
+    maven {
+        name = "CottonMC"
+        setUrl("https://server.bbkr.space/artifactory/libs-release")
+    }
+}
+
+fun RepositoryHandler.modrinth() {
+    maven {
+        name = "Modrinth"
+        setUrl("https://api.modrinth.com/maven")
+        content {
+            includeGroup("maven.modrinth")
+        }
+    }
+}
+
+// dependencies
+
+fun DependencyHandlerScope.mcVersion(version: String = extension("minecraft_version")): String {
+    return "com.mojang:minecraft:$version"
+}
+
+fun DependencyHandlerScope.yarn(version: String = extension("yarn_mappings")): String {
+    return "net.fabricmc:yarn:$version:v2"
+}
+
+fun DependencyHandlerScope.loader(version: String = extension("loader_version"), bundled: Boolean = false): Dependency? {
+    return optionallyBundled("net.fabricmc:fabric-loader:$version", bundled)
+}
+
+fun DependencyHandlerScope.fabricApi(version: String = extension("fabric_api_version"), bundled: Boolean = false): Dependency? {
+    return optionallyBundled("net.fabricmc.fabric-api:fabric-api:$version", bundled)
+}
+
+fun DependencyHandler.fabricKotlin(version: String = extension("fabric_kotlin_version"), bundled: Boolean = false): Dependency? {
+    return optionallyBundled("net.fabricmc:fabric-language-kotlin:$version", bundled)
+}
+
+fun DependencyHandler.arrp(version: String = extension("arrp_version"), bundled: Boolean = false): Dependency? {
+    return optionallyBundled("net.devtech:arrp:$version", bundled)
+}
+
+fun DependencyHandler.patchouli(version: String = extension("patchouli_version"), bundled: Boolean = false): Dependency? {
+    return optionallyBundled("vazkii.patchouli:Patchouli:$version", bundled)
+}
+
+fun DependencyHandler.libgui(version: String = extension("libgui_version"), bundled: Boolean = false): Dependency? {
+    return optionallyBundled("io.github.cottonmc:LibGui:$version", bundled)
+}
+
+fun DependencyHandler.nucleus(version: String = extension("nucleus_version"), bundled: Boolean = false): Dependency? {
+    return optionallyBundled("maven.modrinth:nucleus:$version", bundled, this::modApi)
+}
+
+fun DependencyHandler.rebornEnergy(version: String = extension("tech_reborn_energy_version"), bundled: Boolean = false): Dependency? {
+    return optionallyBundled("teamreborn:energy:$version", bundled, this::modApi)
+}
+
+fun DependencyHandler.dataTagLib(version: String = extension("data_tag_lib_version"), bundled: Boolean = false): Dependency? {
+    return optionallyBundled("com.github.NathanPB:KtDataTagLib:$version", bundled, this::modApi)
+}
+
+fun DependencyHandler.vorbis(version: String = extension("vorbis_version")): Dependency? {
+    return implementation("com.googlecode.soundlibs:vorbisspi:$version")
+}
+
+// END libraries
 
 plugins {
     id("fabric-loom") version "0.10-SNAPSHOT"
@@ -19,38 +138,41 @@ plugins {
     kotlin("plugin.serialization") version "1.5.30"
 }
 
-// dependency managing
+base {
+    archivesName.set(extension("archives_base_name"))
+    version = extension("mod_version")
+    group = extension("maven_group")
+}
 
 repositories {
-    maven {
-        name = "ARRP"
-        setUrl("https://storage.googleapis.com/devan-maven/")
-    }
+    jitpack()
+
+    modmuss()
+    buildcraft()
+    patchouli()
+    devan()
+
+    cottonMc()
+    modrinth()
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${getProp("minecraft_version")}")
-    mappings("net.fabricmc:yarn:${getProp("yarn_mappings")}:v2")
+    minecraft(mcVersion())
+    mappings(yarn())
 
-    modImplementation("net.fabricmc:fabric-loader:${getProp("loader_version")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${getProp("fabric_api_version")}")
-    modImplementation("net.fabricmc:fabric-language-kotlin:${getProp("fabric_kotlin_version")}")
+    loader()
+    fabricApi()
+    fabricKotlin()
 
-    bundledModImplementation("net.devtech:arrp:${getProp("arrp_version")}")
-
-    implementation("com.googlecode.soundlibs:vorbisspi:1.0.3-1")
+    arrp()
 }
 
-// configuration
-
-base {
-    archivesName.set(getProp("archives_base_name"))
-    version = getProp("mod_version")
-    group = getProp("maven_group")
+java {
+    withSourcesJar()
 }
 
 loom {
-    accessWidenerPath.set(file("src/main/resources/nucleus.accesswidener"))
+    accessWidenerPath.set(file("src/main/resources/${base.archivesName.get()}.accesswidener"))
 
     runs {
         create("serverTest") {
@@ -74,13 +196,12 @@ tasks {
     }
 
     "processResources"(ProcessResources::class) {
-        // expand ${version} in fabric.mod.json
-        val modVersion = getProp("mod_version")
-
-        inputs.property("version", modVersion)
+        // change ${version} in fabric.mod.json to match the one in gradle.properties
+        val version = extension("mod_version")
+        inputs.property("version", version)
 
         filesMatching("fabric.mod.json") {
-            expand("version" to modVersion)
+            expand("version" to version)
         }
     }
 
