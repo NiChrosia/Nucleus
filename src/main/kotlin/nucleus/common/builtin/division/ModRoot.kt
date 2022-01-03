@@ -12,9 +12,8 @@ abstract class ModRoot<R : ModRoot<R>>(id: String) : RegistrarRoot<R>(id) {
     override val dispatcher = ModPhaseDispatcher<R>()
 
     /** The [RuntimeResourcePack] extension utilized for generating data & resource packs. */
-    // lazily loaded as `instance` is loaded after these two properties
-    open val pack by lazy { RegistrarPack(instance) }
+    open val pack = RegistrarPack(dispatcher.packAddition, id)
 
-    /** The content category containing content registrars. */
-    open val content by lazy { ContentCategory(instance) }
+    /** The content category containing content registrars. The default & root category is [ContentCategory]. */
+    abstract val content: ContentCategory<R>
 }

@@ -1,9 +1,9 @@
-package nucleus.test.content
+package nucleus.common.test.content
 
-import nucleus.common.Nucleus
 import nucleus.common.builtin.division.content.ContentCategory
+import nucleus.common.test.NucleusTest
 
-open class TContentCategory(root: Nucleus) : ContentCategory<Nucleus>(root) {
+open class TContentCategory(root: NucleusTest) : ContentCategory<NucleusTest>(root) {
     override val block = TBlockRegistrar(root)
 
     override val item = TItemRegistrar(root)

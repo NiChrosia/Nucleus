@@ -13,20 +13,20 @@
     "sources": "https://github.com/NiChrosia/Nucleus"
   },
   "icon": "assets/nucleus/icon.png",
-  "license": "CC0-1.0",
+  "license": "MIT",
   "accessWidener": "nucleus.accesswidener",
   "environment": "*",
   "entrypoints": {
     "main": [
       {
         "adapter": "kotlin",
-        "value": "nucleus.common.Nucleus"
+        "value": "nucleus.common.test.NucleusTest"
       }
     ],
     "fabric-gametest": [
       {
         "adapter": "kotlin",
-        "value": "nucleus.test.NucleusTest"
+        "value": "nucleus.common.test.NucleusTest"
       }
     ]
   },
