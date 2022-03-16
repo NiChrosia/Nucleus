@@ -1,9 +1,7 @@
 {
     "required": true,
     "package": "nucleus.mixin",
-    "mixins": [
-        "RegistryMixin"
-    ],
+    "mixins": [],
     "injectors": {
         "defaultRequire": 1
   }

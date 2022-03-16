@@ -1,0 +1,31 @@
+{
+    "schemaVersion": 1,
+    "id": "nucleus-testmod",
+    "version": "${version}",
+
+    "name": "Nucleus Testmod",
+    "description": "Test module for Nucleus.",
+    "authors": [
+        "NiChrosia"
+    ],
+    "contact": {
+        "homepage": "https://github.com/NiChrosia/Nucleus",
+        "sources": "https://github.com/NiChrosia/Nucleus"
+    },
+    "license": "MIT",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            {
+                "adapter": "kotlin",
+                "value": "sample.category.SampleNucleus"
+            }
+        ]
+    },
+    "depends": {
+        "fabricloader": ">=0.8.7",
+        "fabric": ">=0.42.0",
+        "fabric-language-kotlin": "*",
+        "minecraft": ">=1.18"
+    }
+}
