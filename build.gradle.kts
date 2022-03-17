@@ -83,11 +83,21 @@ tasks {
 }
 
 loom {
+    accessWidenerPath.set(File("$rootDir/src/main/resources/nucleus.accesswidener"))
+
     runs {
         create("testmodClient") {
             inherit(getByName("client"))
 
-            name("Client")
+            configName = "Testmod Client"
+
+            source(sourceSets.getByName("testmod"))
+        }
+
+        create("testmodServer") {
+            inherit(getByName("server"))
+
+            configName = "Testmod Server"
 
             source(sourceSets.getByName("testmod"))
         }
