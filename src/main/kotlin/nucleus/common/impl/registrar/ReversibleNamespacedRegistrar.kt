@@ -5,7 +5,7 @@ import nucleus.common.api.registrar.Registrar
 import nucleus.common.api.registrar.capability.Namespaced
 import nucleus.common.api.registrar.capability.Reversible
 
-open class NamespacedReversibleRegistrar<V>(override val namespace: String) : Registrar<Identifier, V>, Reversible<V>, Namespaced<V> {
+open class ReversibleNamespacedRegistrar<V>(override val namespace: String) : Registrar<Identifier, V>, Reversible<V>, Namespaced<V> {
     val content = hashMapOf<Identifier, V>()
     val reversed = hashMapOf<V, Identifier>()
 

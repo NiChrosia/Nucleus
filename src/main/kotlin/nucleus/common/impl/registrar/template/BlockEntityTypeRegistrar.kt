@@ -20,16 +20,13 @@ open class BlockEntityTypeRegistrar(namespace: String) : MinecraftRegistrar<Bloc
     @Suppress("UNCHECKED_CAST") // nullable cast
     fun <B, E> typeOf(block: B): BlockEntityType<E> where B : Block, B : BlockEntityProvider, E : BlockEntity {
         val factory = { pos: BlockPos, state: BlockState ->
-            val entity = block.createBlockEntity(pos, state)
             val nullEntity = "Block '$block' cannot create a block entity using the given position and state."
-            entity ?: throw IllegalArgumentException(nullEntity)
+            val entity = block.createBlockEntity(pos, state) ?: throw IllegalArgumentException(nullEntity)
 
-            val casted = entity as? E
             val invalidType = "Created entity is of invalid type."
-            casted ?: throw IllegalArgumentException(invalidType)
+            val casted = (entity as? E) ?: throw IllegalArgumentException(invalidType)
 
-            @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
-            casted!! // oddly enough, the compiler can't infer that the variable isn't null here
+            casted
         }
 
         return typeOf(block, factory)
