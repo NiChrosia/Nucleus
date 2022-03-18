@@ -9,7 +9,7 @@ import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.text.Text
 import nucleus.common.impl.registrar.DeferredRegistrar
 
-open class ScreenRegistrar(namespace: String) : DeferredRegistrar<ScreenHandlerType<*>, HandledScreens.Provider<*, *>>({ HandledScreens.PROVIDERS }) {
+open class ScreenRegistrar : DeferredRegistrar<ScreenHandlerType<*>, HandledScreens.Provider<*, *>>({ HandledScreens.PROVIDERS }) {
     // provide a library function for an otherwise private constructor
     fun <S, H> providerOf(factory: (H, PlayerInventory, Text) -> S): HandledScreens.Provider<H, S> where S : Screen, S : ScreenHandlerProvider<H>, H : ScreenHandler {
         return HandledScreens.Provider(factory)

@@ -1,12 +1,10 @@
 package nucleus.common.api.registrar.capability
 
-import net.minecraft.util.Identifier
-
 /** A registrar capability that allows value-to-key identification. */
-interface Reversible<T> {
-    fun identify(value: T): Identifier
+interface Reversible<K, V> {
+    fun identify(value: V): K
 
-    fun noKeyFound(value: T): IllegalArgumentException {
+    fun noKeyFound(value: V): IllegalArgumentException {
         return IllegalArgumentException("No such key found for given value '$value.'")
     }
 }

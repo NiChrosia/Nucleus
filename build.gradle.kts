@@ -5,8 +5,6 @@ plugins {
     java
 }
 
-// TODO - make testmod version actually functional
-
 group = property("maven_group")!!
 version = property("mod_version")!!
 
@@ -44,13 +42,16 @@ allprojects {
 }
 
 tasks {
-    processResources {
+    val applyVersion: ProcessResources.() -> Unit = {
         inputs.property("version", project.version)
 
         filesMatching("fabric.mod.json") {
             expand(mutableMapOf("version" to project.version))
         }
     }
+
+    named("processTestmodResources", applyVersion)
+    processResources(applyVersion)
 
     jar {
         from("LICENSE")
@@ -59,13 +60,8 @@ tasks {
     publishing {
         publications {
             create<MavenPublication>("mavenJava") {
-                artifact(remapJar) {
-                    builtBy(remapJar)
-                }
-
-                artifact(kotlinSourcesJar) {
-                    builtBy(remapSourcesJar)
-                }
+                val components = getComponents()
+                from(components["java"])
             }
         }
 
